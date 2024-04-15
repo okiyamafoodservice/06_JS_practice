@@ -41,6 +41,24 @@
       //ここに書いたJavaScriptのみ送ってください。
 
       const trident = document.getElementById("trident");
+
+      const red = document.querySelector(".red");
+
+      const blue = document.querySelector(".blue");
+
+      const orange = document.querySelector(".orange");
+
+      red.addEventListener("click", () => {
+        trident.classList.toggle("colorRed");
+      });
+
+      blue.addEventListener("click", () => {
+        trident.classList.toggle("colorBlue");
+      });
+
+      orange.addEventListener("click", () => {
+        trident.classList.toggle("colorOrange");
+      });
     </script>
   </body>
 </html>
