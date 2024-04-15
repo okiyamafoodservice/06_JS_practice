@@ -31,10 +31,13 @@
       demaeicchou.preview();
 
       class InstantNoodle {
+        //メソッドの再実行をする場合
         static TYPE = "インスタントラーメン";
         static making() {
           return `<p>${InstantNoodle.TYPE}は鍋で作ります。</p>`;
         }
+        ______________ここまでが必要;
+
         constructor(ramen, taste) {
           this.name = ramen;
           this.soup = taste;
@@ -47,8 +50,6 @@
 
       document.body.insertAdjacentHTML("beforeend", InstantNoodle.making());
       console.log(InstantNoodle.TYPE);
-
-      //メソッドの再実行
 
       //   const saltRamen = new InstantNoodle("サッポロ一番塩", "塩");
       //   const demaeicchou2 = new InstantNoodle("出前一丁", "醤油");
