@@ -31,6 +31,10 @@
       demaeicchou.preview();
 
       class InstantNoodle {
+        static TYPE = "インスタントラーメン";
+        static making() {
+          return `<p>${InstantNoodle.TYPE}は鍋で作ります。</p>`;
+        }
         constructor(ramen, taste) {
           this.name = ramen;
           this.soup = taste;
@@ -40,6 +44,11 @@
           return `<p>${this.name}は${this.soup}味です</p>`;
         }
       }
+
+      document.body.insertAdjacentHTML("beforeend", InstantNoodle.making());
+      console.log(InstantNoodle.TYPE);
+
+      //メソッドの再実行
 
       //   const saltRamen = new InstantNoodle("サッポロ一番塩", "塩");
       //   const demaeicchou2 = new InstantNoodle("出前一丁", "醤油");
@@ -62,6 +71,7 @@
       console.log(ramens);
 
       ramens.forEach((ramen) => {
+        //lengthを描かなくても、要素の数だけ回る
         document.body.insertAdjacentHTML("beforeend", ramen.descript());
       });
     </script>
