@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>インスタントラーメン</title>
+  </head>
+  <body>
+    <p id="result"></p>
+
+    <script>
+      const demaeicchou = {
+        name: "出前一丁",
+        soup: "醤油",
+        preview: function () {
+          const area = document.querySelector("#result");
+          area.innerHTML = `${this.name}は、${this.soup}ラーメンです。`;
+        },
+      };
+      demaeicchou.preview();
+
+      demaeicchou.soup = "とんこつ";
+
+      demaeicchou.preview = function () {
+        const area = document.querySelector("#result");
+        area.innerHTML = `${this.name}は、${this.soup}ラーメンではありません。`;
+      };
+
+      delete demaeicchou.name;
+
+      demaeicchou.preview();
+
+      class InstantNoodle {
+        constructor(ramen, taste) {
+          this.name = ramen;
+          this.soup = taste;
+        }
+
+        descript() {
+          return `<p>${this.name}は${this.soup}味です</p>`;
+        }
+      }
+
+      //   const saltRamen = new InstantNoodle("サッポロ一番塩", "塩");
+      //   const demaeicchou2 = new InstantNoodle("出前一丁", "醤油");
+
+      //   console.log(saltRamen);
+      //   console.log(`${saltRamen.name}は${saltRamen.soup}味`);
+
+      //   console.log(demaeicchou2);
+      //   console.log(`${demaeicchou2.name}は${demaeicchou2.soup}味`);
+
+      //   console.log(saltRamen.descript(), demaeicchou2.descript());
+      //メソッドを使って呼び出す
+      //   document.body.insertAdjacentHTML("beforeend", saltRamen.descript());
+      //   document.body.insertAdjacentHTML("beforeend", demaeicchou2.descript());
+
+      const ramens = [];
+      ramens.push(new InstantNoodle("サッポロ一番塩", "塩"));
+      ramens.push(new InstantNoodle("出前一丁", "醤油"));
+
+      console.log(ramens);
+
+      ramens.forEach((ramen) => {
+        document.body.insertAdjacentHTML("beforeend", ramen.descript());
+      });
+    </script>
+  </body>
+</html>

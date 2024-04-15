@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>オブジェクトのサンプル①</h1>
+    <script>
+      // オブジェクトの定義
+      const person = {
+        // プロパティ
+        name: "", //""は空文字といってデータが何もない文字列を意味しています。
+        age: 0, // メソッド
+        information: function () {
+          return "名前：" + this.name + "\n年齢：" + this.age;
+        },
+      }; // プロパティの値を代入
+
+      person.name = "山田太郎";
+      person.age = 18; // 情報の開示
+      const info = person.information();
+      console.log(info);
+
+      //もっと簡単なオブジェクト
+      const dict = { apple: "りんご", banana: "バナナ", orange: "オレンジ" };
+
+      // りんごの取得
+      console.log(dict.apple);
+      console.log(dict["apple"]);
+
+      //内容の変更
+      dict.apple = "林檎";
+      console.log(dict);
+
+      //葡萄を加える
+      dict.grape = "ぶどう"; //無いキーを書くと新しく加わる
+      console.log(dict);
+
+      //オブジェクトの要素を削除する
+      delete dict.orange;
+      console.log(dict);
+    </script>
+  </body>
+</html>
