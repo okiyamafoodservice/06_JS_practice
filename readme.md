@@ -4,6 +4,63 @@
 
 ## オブジェクトとクラス
 
+- 4 月 22 日(月曜日)
+
+```js
+class InstantNoodle {
+  // 静的プロパティ
+  static TYPE = "インスタントラーメン";
+
+  // 静的メソッド
+  static making() {
+    return `<p>${InstantNoodle.TYPE}は、鍋で作ります。</p>`;
+  }
+
+  // オブジェクトプロパティ
+  constructor(ramen, taste) {
+    this.name = ramen;
+    this.soup = taste;
+  }
+
+  descript() {
+    return `<p>${this.name}は${this.soup}味です</p>`;
+  }
+}
+
+document.body.insertAdjacentHTML("beforeend", InstantNoodle.making());
+console.log(InstantNoodle.TYPE);
+
+//   サブクラス
+class Maker extends InstantNoodle {
+  // InstantNoodleクラスは引数が2だったが、Makerでは3つ
+  constructor(ramen, taste, company) {
+    // superclassから継承
+    super(ramen, taste);
+    this.maker = company;
+  }
+  makerDescript() {
+    return `<p>販売元は、${this.maker}です。</p>`;
+  }
+
+  // オーバーライド(上書き)
+  descript() {
+    return `<p>${this.name}は${this.maker}です。</p>`;
+  }
+}
+
+import { ChiikawaMovie } from "./export.js";
+
+import { contents } from "./object.js";
+
+// import {モジュール名} from "読み込むjsファイル"
+
+//   サブクラスのインスタンス化
+const maker = new Maker("マルちゃん製麺", "醤油", "東洋水産");
+
+document.body.insertAdjacentHTML("beforeend", maker.makerDescript());
+document.body.insertAdjacentHTML("beforeend", maker.descript());
+```
+
 - 4 月 15 日(月曜日)
 
 ```js
