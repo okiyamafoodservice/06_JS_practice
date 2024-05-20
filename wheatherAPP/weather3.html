@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wave Animation</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/modern-css-reset/dist/reset.min.css"
+    />
+    <meta name="description" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:image:alt" content="" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <meta name="theme-color" content="#fafafa" />
+    <style>
+      svg {
+        border: 1px solid #ccc;
+        width: 100%;
+        max-width: 960px;
+        height: auto;
+      }
+
+      label {
+        display: none;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      本日の三重県南部の波の高さ：
+      <p class="waveHeightText"></p>
+    </h1>
+
+    <h2 class="supAdjust">
+      SUPは...
+      <p class="indicator"></p>
+    </h2>
+    <svg width="960" height="300" viewBox="0 0 960 300">
+      <defs>
+        <linearGradient
+          id="waveGradient"
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="150"
+          x2="0"
+          y2="300"
+        >
+          <stop offset="0%" style="stop-color: #0000ff" />
+          <stop offset="100%" style="stop-color: #0071bc" />
+        </linearGradient>
+      </defs>
+      <path
+        id="wavePath"
+        fill="url(#waveGradient)"
+        d="M0,150 Q120,150 240,150 T960,150 T1440,150 T1920,150 V300 H0 Z"
+      ></path>
+    </svg>
+    <label>
+      今日の波の高さ:
+      <input
+        type="number"
+        id="waveHeightInput"
+        min="0"
+        max="150"
+        value="0"
+        step="1"
+      />m
+    </label>
+
+    <script>
+      // APIを取得するためのスクリプト
+
+      const mieNanbuCode = 472000; // 三重県南部のコード番号を指定
+
+      // テンプレートリテラルでconst urlに代入します。
+      // エンドポイント
+      const url = `https://www.jma.go.jp/bosai/forecast/data/forecast/${mieNanbuCode}.json`;
+
+      fetch(url)
+        .then((response) => {
+          if (response.status !== 200) {
+            console.log("問題がありました。Status Code:" + response.status);
+            return;
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // 特定のキーの値を取得
+          const waveData = data[0].timeSeries[0].areas[0].waves[1]; // 階層構造に基づいて波のデータを取得
+          console.log("取得したデータ:", data[1]);
+          console.log("waveDataの内容:", waveData);
+
+          // waveDataの型を確認
+          console.log("waveDataの型:", typeof waveData);
+
+          // waveDataを半角文字に変換
+          const halfWidthWaveData = waveData.normalize("NFKC");
+          console.log(halfWidthWaveData);
+
+          const waveHeightText = document.querySelector(".waveHeightText");
+          waveHeightText.innerHTML = halfWidthWaveData;
+
+          const waveDataArray = Array.from(halfWidthWaveData);
+          console.log("waveDataを配列に変換:", waveDataArray);
+
+          console.log(
+            "waveDataArrayの最初の3つの要素:",
+            waveDataArray[0],
+            waveDataArray[1],
+            waveDataArray[2]
+          );
+
+          const waveDataNum = `${waveDataArray[0]}${waveDataArray[1]}${waveDataArray[2]}`;
+          console.log("waveDataNum:", waveDataNum);
+
+          const waveHeight = parseFloat(waveDataNum) * 10;
+          console.log("waveHeight:", waveHeight);
+
+          const indicator = document.querySelector(".indicator");
+          if (waveHeight >= 20) {
+            indicator.innerHTML = "危険";
+          } else if (waveHeight >= 15) {
+            indicator.innerHTML = "少し危ないかも";
+          } else if (waveHeight >= 1) {
+            indicator.innerHTML = "エキサイティング！";
+          } else {
+            indicator.innerHTML = "快適！";
+          }
+
+          // input要素を取得
+          const waveHeightInput = document.getElementById("waveHeightInput");
+
+          // inputの値を設定
+          waveHeightInput.value = waveHeight;
+
+          // アニメーションを開始
+          startWaveAnimation(waveHeight);
+        })
+        .catch((err) => {
+          console.log("Fetch Error:", err);
+        });
+
+      // 波の高さを調整するためのスクリプト
+      const startWaveAnimation = (initialWaveHeight) => {
+        const waveHeightInput = document.getElementById("waveHeightInput");
+        let maxWaveHeight = initialWaveHeight;
+        let wavePhase = 0;
+
+        const animateWave = () => {
+          const waveHeight = maxWaveHeight * Math.sin(wavePhase); // サイン波で高さを計算
+          const newPathData = `M0,150 Q120,${150 + waveHeight} 240,150 Q360,${
+            150 - waveHeight
+          } 480,150 Q600,${150 + waveHeight} 720,150 Q840,${
+            150 - waveHeight
+          } 960,150 T1920,150 V300 H0 Z`;
+          document.getElementById("wavePath").setAttribute("d", newPathData);
+
+          wavePhase += 0.05; // 波の位相を進める
+          requestAnimationFrame(animateWave); // 次のフレームでアニメーションを続ける
+        };
+
+        waveHeightInput.addEventListener("input", function () {
+          maxWaveHeight = parseInt(this.value);
+        });
+
+        requestAnimationFrame(animateWave); // アニメーション開始
+      };
+
+      // ページが読み込まれた時点でアニメーションを開始
+      window.onload = () => {
+        const initialWaveHeight = parseInt(
+          document.getElementById("waveHeightInput").value
+        );
+        startWaveAnimation(initialWaveHeight);
+      };
+    </script>
+  </body>
+</html>
