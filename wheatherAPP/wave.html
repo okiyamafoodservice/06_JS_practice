@@ -22,8 +22,7 @@
     <style>
       svg {
         border: 1px solid #ccc;
-        width: 100%;
-        max-width: 960px;
+        width: 30%;
         height: auto;
       }
 
@@ -75,10 +74,14 @@
       />m
     </label>
 
+    <!-- 474000/超危険(石垣島)
+      130000/危険(伊豆諸島)
+    240000/エキサイティング -->
+
     <script>
       // APIを取得するためのスクリプト
 
-      const mieNanbuCode = 472000; // 三重県南部のコード番号を指定
+      const mieNanbuCode = 474000; // 三重県南部のコード番号を指定
 
       // テンプレートリテラルでconst urlに代入します。
       // エンドポイント
@@ -125,14 +128,22 @@
           console.log("waveHeight:", waveHeight);
 
           const indicator = document.querySelector(".indicator");
+          const stopElements = document.querySelectorAll("stop"); // stop要素を全て選択
+
           if (waveHeight >= 20) {
-            indicator.innerHTML = "危険";
+            indicator.innerHTML = "超危険";
+            stopElements[0].style.stopColor = "red"; // 最初のstop要素の色を赤に設定
+            stopElements[1].style.stopColor = "darkred"; // 2番目のstop要素の色を濃い赤に設定
           } else if (waveHeight >= 15) {
-            indicator.innerHTML = "少し危ないかも";
+            indicator.innerHTML = "危険";
+            stopElements[0].style.stopColor = "orange"; // 最初のstop要素の色をオレンジに設定
+            stopElements[1].style.stopColor = "darkorange"; // 2番目のstop要素の色を濃いオレンジに設定
           } else if (waveHeight >= 1) {
             indicator.innerHTML = "エキサイティング！";
           } else {
             indicator.innerHTML = "快適！";
+            stopElements[0].style.stopColor = "blue"; // 最初のstop要素の色を緑に設定
+            stopElements[1].style.stopColor = "darkblue"; // 2番目のstop要素の色を濃い緑に設定
           }
 
           // input要素を取得
