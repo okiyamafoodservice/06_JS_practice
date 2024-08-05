@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>クイズ0720</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f8ff;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        background-color: #fff;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+      }
+
+      li:hover {
+        background-color: #e0f7fa;
+      }
+
+      time {
+        color: #00796b;
+      }
+
+      .output {
+        margin-top: 20px;
+        font-size: 1.2em;
+        text-align: center;
+        color: #00796b;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #e0f7fa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>キャラクターをクリック</h1>
+    <ul class="characterList">
+      <li><time datetime="2024-09-14">磯野 波平</time></li>
+      <li><time datetime="2024-01-11">磯野 舟</time></li>
+      <li><time datetime="2024-11-24">フグ田 サザエ</time></li>
+      <li><time datetime="2024-03-11">磯野 カツオ</time></li>
+      <li><time datetime="2024-06-15">磯野 ワカメ</time></li>
+      <li><time datetime="2024-03-18">フグ田 タラオ</time></li>
+      <li><time datetime="2024-04-03">フグ田 マスオ</time></li>
+    </ul>
+    <div class="output"></div>
+    <script>
+      const characterList = document.querySelectorAll(".characterList li");
+      let isSagittarius;
+
+      for (let i = 0; i < characterList.length; i++) {
+        characterList[i].addEventListener("click", function () {
+          const datetime = this.querySelector("time").getAttribute("datetime");
+          const date = new Date(datetime);
+
+          checkSagittarius(date);
+
+          let message = this.textContent;
+          if (isSagittarius) {
+            message += " 射手座です";
+          } else {
+            message += " は射手座ではありません";
+          }
+
+          document.querySelector(".output").textContent = message;
+        });
+      }
+
+      function checkSagittarius(date) {
+        const sagittariusStart = new Date(date.getFullYear(), 10, 23);
+        const sagittariusEnd = new Date(date.getFullYear(), 11, 21);
+        isSagittarius = date >= sagittariusStart && date <= sagittariusEnd;
+      }
+    </script>
+  </body>
+</html>
